@@ -11,7 +11,7 @@ from config import CHALLONGE_API_KEY, CHALLONGE_USERNAME
 
 def randomword(length):
     """ Generates a random string """
-    return ''.join(random.choice(string.lowercase) for i in range(length))
+    return ''.join(random.choice(string.ascii_lowercase) for i in range(length))
 
 
 def get_random_player(players):
@@ -74,7 +74,7 @@ def tournament(name, filename, singles):
         name, randomword(10), open_signup=False)
     generate_participants(tourny['url'], teams)
     click.echo('Tourny created with participants: %s' %
-               tourny['full-challonge-url'])
+               tourny['full_challonge_url'])
 
 
 if __name__ == '__main__':

@@ -2,3 +2,5 @@ config.py
 .vscode/
 *.pyc
 *.json
+__pycache__/
+venv/
