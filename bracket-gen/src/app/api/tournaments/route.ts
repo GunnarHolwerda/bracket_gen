@@ -29,13 +29,7 @@ const createTeams = (participants: string[]): string[] => {
     while (participants.length > 0) {
         const playerOne = getRandomPlayer(participants);
         const playerTwo = getRandomPlayer(participants);
-        teams.push(`${playerOne} & ${playerTwo}`);
-    }
-
-    //Shuffle the teams array
-    for (let i = teams.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [teams[i], teams[j]] = [teams[j], teams[i]];
+        teams.push(`${playerOne} and ${playerTwo}`);
     }
 
     return teams;
@@ -45,7 +39,6 @@ const createTeams = (participants: string[]): string[] => {
 const createChallongeTournament = (name: string) => {
     return new Promise((res, rej) => {
         client.tournaments.create({
-
             tournament: {
                 name,
                 open_signup: false,
@@ -73,6 +66,7 @@ const addParticipant = (tournamentId: string, name: string) => {
                     rej(err);
                     return;
                 }
+
                 res(data);
             }
         });
@@ -83,9 +77,8 @@ const addParticipant = (tournamentId: string, name: string) => {
 export async function POST(req: NextRequest) {
     const { players, tournamentName } = await req.json() as { players: string[], tournamentName: string };
     const teams = createTeams(players);
-    const tournament: any = await createChallongeTournament(tournamentName);
 
-    console.log(tournament);
+    const tournament: any = await createChallongeTournament(tournamentName);
 
     for (const team of teams) {
         await addParticipant(tournament.tournament.id, team);
