@@ -1,16 +1,22 @@
 "use client";
-import { useCallback, useState } from "react";
+import { useCallback, useState, useEffect } from "react";
 
 export default function Home() {
-  const [players, setPlayers] = useState<string[]>(
-    localStorage.getItem("players")
-      ? (JSON.parse(localStorage.getItem("players")!) as string[])
-      : []
-  );
-  const [name, setName] = useState<string>(
-    localStorage.getItem("tournamentName") || ""
-  );
+  const [players, setPlayers] = useState<string[]>([]);
+  const [name, setName] = useState<string>("");
   const [creating, setCreating] = useState(false);
+
+  useEffect(() => {
+    if (localStorage.getItem("players")) {
+      setPlayers(JSON.parse(localStorage.getItem("players")!) as string[]);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (localStorage.getItem("tournamentName")) {
+      setName(localStorage.getItem("tournamentName") || "");
+    }
+  }, []);
 
   const createTournament = useCallback(async () => {
     setCreating(true);
