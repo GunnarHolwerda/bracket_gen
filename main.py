@@ -57,7 +57,8 @@ def generate_participants(tournament_url, teams):
 @click.argument('name')
 @click.argument('filename')
 @click.option('--singles', is_flag=True)
-def tournament(name, filename, singles):
+@click.option('--dry', is_flag=True)
+def tournament(name, filename, singles, dry):
     """
         Generates a Challonge bracket for the tournament
     """
@@ -70,11 +71,15 @@ def tournament(name, filename, singles):
             return
     else:
         teams = [player['name'] for player in teams['players']]
-    tourny = challonge.tournaments.create(
-        name, randomword(10), open_signup=False)
-    generate_participants(tourny['url'], teams)
-    click.echo('Tourny created with participants: %s' %
+
+    if not dry:
+        tourny = challonge.tournaments.create(
+            name, randomword(10), open_signup=False)
+        generate_participants(tourny['url'], teams)
+        click.echo('Tourny created with participants: %s' %
                tourny['full_challonge_url'])
+    else:
+        click.echo('Tourny would be created with participants: %s' % teams)
 
 
 if __name__ == '__main__':
