@@ -1,6 +1,6 @@
 config.py
 .vscode/
 *.pyc
-*.json
+teams.json
 __pycache__/
 venv/
